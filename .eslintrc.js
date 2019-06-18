@@ -13,5 +13,10 @@ module.exports = {
   },
   parserOptions: {
     parser: 'babel-eslint'
+  },
+  globals: {
+    CodeMirror: true,
+    hljs: true,
+    js_beautify: true
   }
 }
