@@ -3,13 +3,17 @@
     <github-robbin></github-robbin>
     <header>
       <span id="version" :title="title">{{ title }}</span>
+
     </header>
     <layout>
       <div slot="left" class="fb-grow">
         <code-mirror id="code" v-model="templateText"></code-mirror>
       </div>
+      <div slot="middle" class="fb-grow">
+        <highlight id="output" :code="`function render () { ${code.render} }`"></highlight>
+      </div>
       <div slot="right" class="fb-grow">
-        <highlight id="output" :code="compiledText"></highlight>
+        <ast-node class="app-ast" v-if="code.ast" :value="code.ast" :context="{ depth: 5 }"></ast-node>
       </div>
     </layout>
   </div>
@@ -19,6 +23,7 @@ import Layout from './layouts/Layout.vue'
 import CodeMirror from './components/CodeMirror.vue'
 import Highlight from './components/Highlight.vue'
 import GithubRobbin from './components/GithubRobbin.vue'
+import './Ast'
 const compiler = require('vue-template-compiler')
 
 export default {
@@ -29,16 +34,19 @@ export default {
     GithubRobbin
   },
   computed: {
-    compiledText () {
+    code () {
       let templateText = this.templateText
       templateText = templateText.replace(/\s*\n+\s*/g, ' ').replace(/>\s+/g, '>').replace(/\s+</g, '<')
-      console.log(compiler.compile(templateText).ast)
-      return compiler.compile(templateText).render
+      return compiler.compile(templateText)
     }
   },
   data () {
     return {
-      templateText: '<div> {{ msg }} </div>',
+      templateText: `<div class="counter">
+  <span>{{ count }}</span>
+  <button @click="increment">+</button>
+</div>
+`,
       title: 'vue-template-compiler@2.6.10'
     }
   }
@@ -48,7 +56,7 @@ export default {
 <style lang="stylus">
 html
   box-sizing border-box
-  font-family 'Avenir', Helvetica, Arial, sans-serif
+  font-family monospace
 
 *,
 *::before,
@@ -204,4 +212,12 @@ input
 
 .inline-svg
   width 30px
+
+.app-ast
+  overflow auto
+  padding 6px 12px
+  height 100%
+  font-family monospace
+  font-size 15px
+  background-color #f5f5d5
 </style>
