@@ -3,7 +3,6 @@
     <github-robbin></github-robbin>
     <header>
       <span id="version" :title="title">{{ title }}</span>
-
     </header>
     <layout>
       <div slot="left" class="fb-grow">

@@ -1,5 +1,5 @@
 <template>
-  <a href="https://github.com/vuejs-tips/compiler"
+  <a href="https://github.com/Magiccwl/vue-compiler-online"
      class="github-corner"
      aria-label="View source on Github">
     <svg width="80"
